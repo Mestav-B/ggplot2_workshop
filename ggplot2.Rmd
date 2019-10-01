@@ -1,0 +1,472 @@
+---
+title: "ggplot2 Workshop"
+output: 
+  learnr::tutorial:
+    progressive: false
+    allow_skip: true
+    df_print: default
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+if(!("ggplot2" %in% rownames(installed.packages()))) {
+  install.packages("ggplot2")
+}
+
+library(learnr)
+library(ggplot2)
+```
+
+
+## Part 1: Introduction
+
+We discuss and practice how to contruct and customize almost any plot you can imagine with the `ggplot2` package in R. This tutorial is interactive and includes R code chunks that you will edit and execute yourself as we walk through the tutorial, and includes a series of short quizes so that you can test your new knowledge.
+
+We do not assume any experience with R. Don't worry about the programming details making sense, just follow the patterns we put forth.
+
+Throughout the document, you are required to copy and paste code from r code chunks (highlited in gray) into console-like windows which you run. Later on, you will have to copy AND edit code from the chunks. 
+
+Here is an example to get started:
+
+```{r h1, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+head(mpg)
+```
+
+```{r e1, exercise=TRUE, exercise.lines = 3}
+
+```
+
+This tutorial is focused on `ggplot`, but we at times use other packages for data manipulation `dplyr` and `purrr` for programming with ggplot. These packages are all part of the `tidyverse`, a set of awesome tools for doing data science related tasks.
+
+The content presented here is based on the book ggplot2: Elegant Graphics for Data Analysis.
+
+## What are plots made of?
+
+From the text ggplot2: Elegant Graphics for Data Analysis by Wickham:
+
+  - Data that you want to visualize
+  
+  - Layers made of geometric elements and static transformation
+  
+  - Scales that map values in the data to values in aesthetic space
+  
+  - A coordinate system (coord) that describes how data coordinates are mapped to the plane
+  
+  - Faceting that describes how to create multiple smaller plots on subsets of data
+  
+  - Theme that controls things like font size and backgroud color 
+  
+## Installation
+
+This section we won't complete for the tutorial, but it is here for completeness. 
+
+We need to first install ggplot2 and get it loaded. You should already have R/Rstudio working on your computer.
+
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+install.packages("ggplot2")
+```
+
+
+## Data set for examples
+
+The `mpg` data set is bundled inside the `ggplot2` package. 
+
+You will have to first load and attach the package with `library()`, but this tutorial loads it automatically. 
+
+```{r h2, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+print(mpg)
+```
+
+```{r e2, exercise=TRUE, exercise.lines = 3}
+
+```
+
+
+If you're on a personal computer, make sure you:
+
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+library(ggplot2)
+print(mpg)
+```
+
+
+### Fuel economy data
+
+```{r e3, exercise=TRUE, exercise.lines = 3}
+mpg
+```
+
+Summary of the data:
+
+`mpg` contains the fuel economy of popular car models from 1999 to 2008, collected by the US EPA.  
+ - `cty`, `hwy` record miles per gallon (mpg) for city and highway driving.
+ 
+ - `displ` is engine displacement in liters
+ 
+ - `drv` is the type of drivetrain: front wheel (f), rear wheel (r) or four wheel (4)
+ 
+ - `model` is the car model. 38 models.
+ 
+ - `class` categorical variable describing the type of car: two seater, SUV, compact, etc, ...
+
+## Part 2: First plots
+
+Three of the list of components to any ggplot we covered earlier are absolutely essential:
+
+ - Data, 
+
+ - a set of aesthetic mappings (mappings between variables in data and visual properties), and 
+
+ - at least one layer that describes how to render the observations (using the geom function)
+
+```{r h4, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e4, exercise=TRUE, exercise.lines = 5}
+
+```
+
+The data set and aesthetic mappings are supplied to the `ggplot()` function call.
+
+Layers of iterest are added to the plot using the `+`
+
+All plots we make will follow this basic pattern. As we learn new layers and themes, we'll sequentially add them using `+` to the base ggplot object.
+
+In the scatterplot above,
+
+ - `data = mpg` sends the data
+ 
+ - Aesthetic mapping `aes(x = displ, y = hwy)` reads as engine size mapped to the x position, fuel economy mapped to the y position.
+ 
+ - `geom_point()` plots the points given data and the mapping
+
+## Exercise
+
+What part of the code for the displacement versus hwy scatterplot would you modify to create a histogram of only the displacement data?
+
+ - Since you have not seen the geom for making a histogram yet, it is `geom_histogram()`
+
+```{r h5, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Edit this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e5, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+## Aesthetics
+
+Let's extend our scatterplot from the previous section and use it to display a third variable encoded as either color or size. 
+
+We want to see how class of car relates to city mileage (cty) and engine size (displ). 
+
+Do this in two ways. First by color then by size:
+
+```{r h6, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Edit this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e6, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+## Exercise 
+
+In the previous example, we cty to size and color but not shape. Try mapping to shape and see what error you get. 
+
+```{r h7, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Edit this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e7, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+Since we can't do map to shape, let's pick a variable we can map. Use the categorical variable, such as fuel type `fl`:
+
+```{r h8, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Edit this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e8, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## Exercise
+
+We have some intuition that heavier cars tend to have worse city mpg (cty). Can you color by class of vehicle to see which classes of vehicle tend to have high city mpg? The `class` variable from the mpg data gives the class of each vehicle. 
+
+```{r h9, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Edit this code and run it
+ggplot(data = mpg, aes(x = displ, y = hwy)) + 
+  geom_point()
+```
+
+```{r e9, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+
+Things to keep in mind:
+
+ - Color and shape work well with categorical variables
+ 
+ - If you have a large number of groups, it is difficult to color by or shape by group, so you might try facetting by group, where you split the groups into separate plots by group level.
+ 
+ 
+## Facet grid
+
+Use facet to plot categorical variables where each category displays separately. 
+
+Facet splits the data by the desired categories, then creates a plot of each subset.
+
+
+```{r h10, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ, cty)) + 
+  geom_point() + 
+  facet_wrap(~class)
+```
+
+```{r e10, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+## Common geoms
+
+In this section, we practice with some of the most common geoms. 
+
+Let's look at some useful geoms for summarizing data:
+
+`geom_histogram()` can be used to visualize the distribution of a continuous variable.
+
+`geom_bar()` does the same job for categorical variables.
+
+Let's take some variables of interest from the mpg data and inspect their distributions:
+
+```{r h11, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ)) + 
+  geom_histogram()
+
+ggplot(data = mpg, aes(class)) + 
+  geom_bar()
+```
+
+```{r e11, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## box-and-whiskers
+
+For an alternative summary showing the distribution of a continuous variable, you can make a box-and-whiskers plot:
+
+```{r h12, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(class,displ)) + 
+  geom_boxplot()
+
+ggplot(data = mpg, aes(drv,cty)) + 
+  geom_boxplot()
+```
+
+```{r e12, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## smoothers 
+
+If you want a quick trend line or smoother on a plot of two continuous variables, ggplot makes it easy with `geom_smooth`. 
+
+```{r h13, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(hwy, cty)) +
+  geom_point() + 
+  geom_smooth()
+
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point() + 
+  geom_smooth()
+```
+
+```{r e13, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## Other options
+
+If you want to shut off their standard error for the curve, use the argument `se = FALSE` in `geom_smooth()`.
+
+```{r h14, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+```{r e14, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## Other options: methods
+
+geom_smooth allows a number of methods for fitting a line to the data with the `methods` argument. 
+
+If `method = "loess"` is entered, a smooth local regression is fit. The parameter that specifies how much wiggle to allow in the line is `span`. Span goes from 0 to 1 (no wiggle).
+
+This is the first time in the tutorial that we have entered auxillary arguments into a geom. 
+
+Use the code below to play with the two arguments span and se:
+
+```{r h15, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(se = FALSE, span = 0.2)
+```
+
+```{r e15, exercise=TRUE, exercise.lines = 5}
+
+```
+
+## Documentation
+
+Now, explore some alternative methods.
+
+Use the `?` followed by the function name to look at documentation pages.
+
+
+```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+?geom_smooth
+```
+
+```{r e16, exercise=TRUE, exercise.lines = 5}
+
+```
+
+This should have launched a web page with the function documentation.
+
+Scroll to method (under the Arguments section) and choose two alternative methods to test out in the next code chunk:
+
+
+```{r e17, exercise=TRUE, exercise.lines = 5}
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), se = FALSE)
+```
+
+
+## Modify the axes
+
+Congrats! You've made a few simple plots. 
+
+The next common activity is to modify the default axes generated, and mabye add a title and change the theme.
+
+Start with changing the axes labels with `xlab("x axis title")` and `ylab("Y title")` which take length one character strings containing the desired axis titles: 
+
+ - Modify my code to make the x axis title to Engine displacement (liters)
+ 
+ - Make the y-axis title City fuel economy (mpg)
+ 
+Remember to add these functions separated with the `+` symbol.
+
+```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r e16, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+## Modify axes: limits
+
+Modify the x and y limits for each axis. Do this using `xlim(), ylim()`.
+
+ - Assume we are only interested in engine displacements from 2 to 6,
+ and city mpgs from 10 to 30
+
+```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(data = mpg, aes(displ, cty)) +
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  xlim(c(2,6)) + 
+  ylim(c(10,30))
+```
+
+```{r e16, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+As an exercise, modify the x limits on the following plot to only include the levels "f" and "r"
+
+```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+ggplot(mpg, aes(drv, hwy)) +
+  geom_jitter(width = 0.25)
+```
+
+```{r e16, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+## Output
+
+This the last section of this basic intro to ggplot.
+
+Now that we have made some plots, we will want to save them temporarily or write them to disk.
+
+If you want to exit your R session, write to to disk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
