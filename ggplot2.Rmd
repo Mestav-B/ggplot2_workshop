@@ -397,14 +397,14 @@ Start with changing the axes labels with `xlab("x axis title")` and `ylab("Y tit
  
 Remember to add these functions separated with the `+` symbol.
 
-```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+```{r h18, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Copy this code and run it
 ggplot(data = mpg, aes(displ, cty)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-```{r e16, exercise=TRUE, exercise.lines = 5}
+```{r e18, exercise=TRUE, exercise.lines = 5}
 
 ```
 
@@ -416,7 +416,7 @@ Modify the x and y limits for each axis. Do this using `xlim(), ylim()`.
  - Assume we are only interested in engine displacements from 2 to 6,
  and city mpgs from 10 to 30
 
-```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+```{r h19, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Copy this code and run it
 ggplot(data = mpg, aes(displ, cty)) +
   geom_point() + 
@@ -425,20 +425,20 @@ ggplot(data = mpg, aes(displ, cty)) +
   ylim(c(10,30))
 ```
 
-```{r e16, exercise=TRUE, exercise.lines = 5}
+```{r e19, exercise=TRUE, exercise.lines = 5}
 
 ```
 
 
 As an exercise, modify the x limits on the following plot to only include the levels "f" and "r"
 
-```{r h16, exercise=FALSE, eval=FALSE, echo=TRUE}
+```{r h20, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Copy this code and run it
 ggplot(mpg, aes(drv, hwy)) +
   geom_jitter(width = 0.25)
 ```
 
-```{r e16, exercise=TRUE, exercise.lines = 5}
+```{r e20, exercise=TRUE, exercise.lines = 5}
 
 ```
 
@@ -449,24 +449,105 @@ This the last section of this basic intro to ggplot.
 
 Now that we have made some plots, we will want to save them temporarily or write them to disk.
 
-If you want to exit your R session, write to to disk
+Save a ggplot object the same way you would any other object, by assigning it a name:
+
+```{r h21, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+pjitt = 
+  ggplot(mpg, aes(drv, hwy)) +
+  geom_jitter(width = 0.25)
+```
+
+```{r e21, exercise=TRUE, exercise.lines = 5}
+
+```
 
 
+Now that you have saved the object, it will not display the plot unless you print the name of the object:
+
+```{r h22, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+pjitt
+```
+
+```{r e22, exercise=TRUE, exercise.lines = 5}
+
+```
 
 
+Now, this object is really only saved temporarily, but if you exit your R session, it will be deleted from memory. 
+
+What is the solution? You need to write the object to disk - or, long-term memory.
+
+You have multiple options for doing this, but one is:
+
+```{r h23, exercise=FALSE, eval=FALSE, echo=TRUE}
+# Copy this code and run it
+pjitt
+ggsave('pjitt1.png', width = 5, heigh = 5)
+```
+
+```{r e23, exercise=TRUE, exercise.lines = 5}
+
+```
 
 
+## Exercise
+
+Work the following multi-part question.
+
+Use the `mpg` data set to build a plot using the instructions provided below. I won't ask you to use anything we have not learned already. I divided the question into parts, which you will build on as you answer the multi-part question.
 
 
+First, are there differences in city mpg by class of automobile? Create box-and-whisker plots of cty by class. Also, is the same true for highway mpg?
+
+```{r h24, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(x = class, y = cty)) +
+  geom_boxplot()
+```
+
+```{r e24, exercise=TRUE, exercise.lines = 5}
+
+```
+
+How much are the city mpgs in the plot above driven by year (1999 or 2008)? Color the box plots by year. 
+
+```{r h25, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(x = class, y = cty)) +
+  geom_boxplot(aes(colour = year))
+```
+
+```{r e25, exercise=TRUE, exercise.lines = 5}
+
+```
+
+Take the same plot code, but instead color by fuel type (fl). Are there any notable fuel types?
+
+```{r h251, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(x = class, y = cty)) +
+  geom_boxplot(aes(colour = fl))
+```
+
+```{r e251, exercise=TRUE, exercise.lines = 5}
+
+```
 
 
+How do number of cylinders (cyl) and engine displacement (displ) relate to city mpg and highway mpg?
 
+ - Create a scatter plot of efficiency versus displacement and size the points by number of cylinders.
+ 
+ - Also, layer the highway mpg plot over the city mpg plot
 
+```{r h26, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(x = displ, y = cty, size = cyl)) + 
+  geom_point(color = "blue") + 
+  geom_point(color = "red", aes(x = displ, y = hwy, size = cyl))
+```
 
+```{r e26, exercise=TRUE, exercise.lines = 5}
 
-
-
-
+```
 
 
 
