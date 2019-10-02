@@ -550,4 +550,19 @@ ggplot(mpg, aes(x = displ, y = cty, size = cyl)) +
 ```
 
 
+Create a bar chart using `geom_bar()` showing the vehicle counts by class and filled by drv. You chan fill in geom_bar with the `fill=` aesthetic.
+
+```{r h27, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(class)) + 
+  geom_bar()
+ggplot(mpg, aes(class, fill = drv)) + 
+  geom_bar()
+```
+
+```{r e27, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+
 
