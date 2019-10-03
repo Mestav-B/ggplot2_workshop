@@ -17,6 +17,7 @@ if(!("ggplot2" %in% rownames(installed.packages()))) {
 
 library(learnr)
 library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -562,6 +563,143 @@ ggplot(mpg, aes(class, fill = drv)) +
 ```{r e27, exercise=TRUE, exercise.lines = 5}
 
 ```
+
+
+## Statistical summaries
+
+`ggplot` has many `stat_` functions for plotting statistical summaries.
+
+Often times data are too vast or difficult to interpret from a plot. The solution is to summarize.
+
+Take the following as an example:
+
+```{r h27ab, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point()
+```
+
+```{r e27ab, exercise=TRUE, exercise.lines = 5}
+
+```
+
+It would be much more informative to plot the mean city mpg at each transmission type, rather than all the points:
+
+To do this, use `stat_summary()`
+
+```{r h28ab, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  stat_summary(geom = "point", fun.y = "mean", color = "blue", size = 3, alpha = 0.5)
+```
+
+```{r e28ab, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+Now that we're summarized using the mean of each transmission type, we probably want the uncertainty in those estimates. 
+
+Use `geom_errorbar` to do add error bars.
+
+```{r h29, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  stat_summary(geom = "point", fun.y = "mean", color = "blue", size = 3, alpha = 0.5) + 
+  stat_summary(fun.data = mean_se, fun.args = list(mult = 2.5), geom = "errorbar")
+```
+
+```{r e29, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+The second `stat_summary` takes arguments `fun.data`, which takes the entire vector being summarized and computes the summary, lower bound, and upper bound.
+
+Also, `fun.args` is used to pass a different multiplier to the `mean_se` function.
+
+
+## Exercise
+
+The following code uses dplyr to calculate some summaries about each class of car. Use the pre-summarised data to re-create the following plot:
+
+```{r h30, exercise=FALSE, eval=FALSE, echo=TRUE}
+class <- mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n(), hwy = mean(hwy))
+```
+
+```{r h31, exercise=FALSE, eval=TRUE, echo=FALSE}
+class <- mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n(), hwy = mean(hwy))
+
+ggplot(mpg, aes(class, hwy)) + 
+  geom_jitter(width = 0.2) + 
+  geom_point(data = class, color = "red", size = 4) + 
+  geom_text(data = class, aes(x = class, y = 10, label = paste0("n = ", n)))
+```
+
+```{r e32, exercise=TRUE, exercise.lines = 10}
+
+```
+
+
+As a Part 2 to this exercise, add error bars to the group means like we did before.
+
+## Annotate
+
+You might want to label individual points of importance with text from the data. 
+
+Take the following plot as an example:
+
+```{r h27a, exercise=FALSE, eval=FALSE, echo=TRUE}
+# highway mileage versus engine displacement
+p = 
+  ggplot(mpg, aes(displ, hwy)) +
+  geom_point()
+```
+
+```{r e27a, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+We may want to see where a particular car brand lies on this plot without cluttering it with every brand. 
+
+This can be achieved by labeling points of interest by color and annotating them with text.
+
+Here is an example where we annotate by the brand Subaru using the `annotate` function:
+
+```{r h28a, exercise=FALSE, eval=FALSE, echo=TRUE}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(
+    data = filter(mpg, manufacturer == "subaru"),
+    color = "red",
+    size = 3
+  ) + 
+  geom_point() + 
+  annotate(geom = "point", x = 5.5, y = 40, color = "red", size = 3) + 
+  annotate(geom = "point", x = 5.5, y = 40, color = "black", size = 1) + 
+  annotate(geom = "text", x = 5.6, y = 40, label = "subaru", hjust = "left")
+```
+
+```{r e28a, exercise=TRUE, exercise.lines = 5}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
