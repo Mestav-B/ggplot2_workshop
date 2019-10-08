@@ -104,6 +104,10 @@ print(mpg)</code></pre>
 <li><p><code>drv</code> is the type of drivetrain: front wheel (f), rear wheel (r) or four wheel (4)</p></li>
 <li><p><code>model</code> is the car model. 38 models.</p></li>
 <li><p><code>class</code> categorical variable describing the type of car: two seater, SUV, compact, etc, …</p></li>
+<li><p><code>year</code> year of manufacture (1999, 2008)</p></li>
+<li><p><code>cyl</code> number of cylinders</p></li>
+<li><p><code>trans</code> transmission type</p></li>
+<li><p><code>fl</code> fuel type</p></li>
 </ul>
 </div>
 </div>
@@ -155,17 +159,18 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 <div class="tutorial-exercise" data-label="e6" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="5">
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"default","exercise.checker":"NULL"}</script>
 </div>
+<p>Which makes more sense for this plot?</p>
 </div>
 <div id="section-exercise-1" class="section level2">
 <h2>Exercise</h2>
-<p>In the previous example, we cty to size and color but not shape. Try mapping to shape and see what error you get.</p>
+<p>Map cty (city mileage) to color. Try mapping to shape instead and see what error you get.</p>
 <pre class="r"><code># Edit this code and run it
 ggplot(data = mpg, aes(x = displ, y = hwy)) + 
   geom_point()</code></pre>
 <div class="tutorial-exercise" data-label="e7" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="5">
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"default","exercise.checker":"NULL"}</script>
 </div>
-<p>Since we can’t do map to shape, let’s pick a variable we can map. Use the categorical variable, such as fuel type <code>fl</code>:</p>
+<p>Since we can’t map a continuous variable to shape, let’s pick a variable we can map. Use the categorical variable, such as fuel type <code>fl</code>:</p>
 <pre class="r"><code># Edit this code and run it
 ggplot(data = mpg, aes(x = displ, y = hwy)) + 
   geom_point()</code></pre>
@@ -175,7 +180,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 </div>
 <div id="section-exercise-2" class="section level2">
 <h2>Exercise</h2>
-<p>We have some intuition that heavier cars tend to have worse city mpg (cty). Can you color by class of vehicle to see which classes of vehicle tend to have high city mpg? The <code>class</code> variable from the mpg data gives the class of each vehicle.</p>
+<p>We hypothesize that drive type (drv) may have some effect on city mileage. Can you color by drive type of vehicle to see which types tend to have high city mpg? The <code>drv</code> variable from the mpg data gives the class of each vehicle.</p>
 <pre class="r"><code># Edit this code and run it
 ggplot(data = mpg, aes(x = displ, y = hwy)) + 
   geom_point()</code></pre>

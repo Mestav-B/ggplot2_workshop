@@ -115,6 +115,14 @@ Summary of the data:
  - `model` is the car model. 38 models.
  
  - `class` categorical variable describing the type of car: two seater, SUV, compact, etc, ...
+ 
+ - `year` year of manufacture (1999, 2008)
+ 
+ - `cyl` number of cylinders
+ 
+ - `trans` transmission type
+ 
+ - `fl` fuel type
 
 ## Part 2: First plots
 
@@ -185,10 +193,11 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 
 ```
 
+Which makes more sense for this plot?
 
 ## Exercise 
 
-In the previous example, we cty to size and color but not shape. Try mapping to shape and see what error you get. 
+Map cty (city mileage) to color. Try mapping to shape instead and see what error you get. 
 
 ```{r h7, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Edit this code and run it
@@ -201,7 +210,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 ```
 
 
-Since we can't do map to shape, let's pick a variable we can map. Use the categorical variable, such as fuel type `fl`:
+Since we can't map a continuous variable to shape, let's pick a variable we can map. Use the categorical variable, such as fuel type `fl`:
 
 ```{r h8, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Edit this code and run it
@@ -215,7 +224,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 
 ## Exercise
 
-We have some intuition that heavier cars tend to have worse city mpg (cty). Can you color by class of vehicle to see which classes of vehicle tend to have high city mpg? The `class` variable from the mpg data gives the class of each vehicle. 
+We hypothesize that drive type (drv) may have some effect on city mileage. Can you color by drive type of vehicle to see which types tend to have high city mpg? The `drv` variable from the mpg data gives the class of each vehicle. 
 
 ```{r h9, exercise=FALSE, eval=FALSE, echo=TRUE}
 # Edit this code and run it
@@ -422,8 +431,7 @@ Modify the x and y limits for each axis. Do this using `xlim(), ylim()`.
 ggplot(data = mpg, aes(displ, cty)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) + 
-  xlim(c(2,6)) + 
-  ylim(c(10,30))
+  xlim(c(2,6)) # add the ylim
 ```
 
 ```{r e19, exercise=TRUE, exercise.lines = 5}
@@ -636,7 +644,8 @@ class <- mpg %>%
 ggplot(mpg, aes(class, hwy)) + 
   geom_jitter(width = 0.2) + 
   geom_point(data = class, color = "red", size = 4) + 
-  geom_text(data = class, aes(x = class, y = 10, label = paste0("n = ", n)))
+  geom_text(data = class, aes(x = class, y = 10, label = paste0("n = ", n))) + 
+  stat_summary(data = mpg, fun.data = mean_se, fun.args = list(mult = 2.5), geom = "errorbar")
 ```
 
 ```{r e32, exercise=TRUE, exercise.lines = 10}
