@@ -2,7 +2,7 @@
 title: "ggplot2 interactive workshop"
 author: "Michael Kleinsasser"
 date: "10/8/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
