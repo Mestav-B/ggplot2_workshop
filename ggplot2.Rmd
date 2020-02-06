@@ -23,11 +23,11 @@ library(dplyr)
 
 ## Part 1: Introduction
 
-We discuss and practice how to contruct and customize almost any plot you can imagine with the `ggplot2` package in R. This tutorial is interactive and includes R code chunks that you will edit and execute yourself as we walk through the tutorial, and includes a series of short quizes so that you can test your new knowledge.
+We discuss and practice how to construct and customize almost any plot you can imagine with the `ggplot2` package in R. This tutorial is interactive and includes R code chunks that you will edit and execute yourself as we walk through the tutorial, and includes a series of short quizzes so that you can test your new knowledge.
 
 We do not assume any experience with R. Don't worry about the programming details making sense, just follow the patterns we put forth.
 
-Throughout the document, you are required to copy and paste code from r code chunks (highlited in gray) into console-like windows which you run. Later on, you will have to copy AND edit code from the chunks. 
+Throughout the document, you are required to copy and paste code from r code chunks (highlighted in gray) into console-like windows which you run. Later on, you will have to copy AND edit code from the chunks. 
 
 Here is an example to get started:
 
@@ -58,7 +58,7 @@ From the text ggplot2: Elegant Graphics for Data Analysis by Wickham:
   
   - Faceting that describes how to create multiple smaller plots on subsets of data
   
-  - Theme that controls things like font size and backgroud color 
+  - Theme that controls things like font size and background color 
   
 ## Installation
 
@@ -146,7 +146,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
 
 The data set and aesthetic mappings are supplied to the `ggplot()` function call.
 
-Layers of iterest are added to the plot using the `+`
+Layers of interest are added to the plot using the `+`
 
 All plots we make will follow this basic pattern. As we learn new layers and themes, we'll sequentially add them using `+` to the base ggplot object.
 
@@ -242,7 +242,7 @@ Things to keep in mind:
 
  - Color and shape work well with categorical variables
  
- - If you have a large number of groups, it is difficult to color by or shape by group, so you might try facetting by group, where you split the groups into separate plots by group level.
+ - If you have a large number of groups, it is difficult to color by or shape by group, so you might try faceting by group, where you split the groups into separate plots by group level.
  
  
 ## Facet grid
@@ -346,7 +346,7 @@ geom_smooth allows a number of methods for fitting a line to the data with the `
 
 If `method = "loess"` is entered, a smooth local regression is fit. The parameter that specifies how much wiggle to allow in the line is `span`. Span goes from 0 to 1 (no wiggle).
 
-This is the first time in the tutorial that we have entered auxillary arguments into a geom. 
+This is the first time in the tutorial that we have entered auxiliary arguments into a geom. 
 
 Use the code below to play with the two arguments span and se:
 
@@ -397,7 +397,7 @@ ggplot(data = mpg, aes(displ, cty)) +
 
 Congrats! You've made a few simple plots. 
 
-The next common activity is to modify the default axes generated, and mabye add a title and change the theme.
+The next common activity is to modify the default axes generated, and maybe add a title and change the theme.
 
 Start with changing the axes labels with `xlab("x axis title")` and `ylab("Y title")` which take length one character strings containing the desired axis titles: 
 
@@ -559,7 +559,7 @@ ggplot(mpg, aes(x = displ, y = cty, size = cyl)) +
 ```
 
 
-Create a bar chart using `geom_bar()` showing the vehicle counts by class and filled by drv. You chan fill in geom_bar with the `fill=` aesthetic.
+Create a bar chart using `geom_bar()` showing the vehicle counts by class and filled by drv. You can fill in geom_bar with the `fill=` aesthetic.
 
 ```{r h27, exercise=FALSE, eval=FALSE, echo=TRUE}
 ggplot(mpg, aes(class)) + 
@@ -638,12 +638,12 @@ class <- mpg %>%
 
 ```{r h31, exercise=FALSE, eval=TRUE, echo=FALSE}
 class <- mpg %>% 
-  group_by(class) %>% 
+  group_by(class) %>%
   summarise(n = n(), hwy = mean(hwy))
 
 ggplot(mpg, aes(class, hwy)) + 
   geom_jitter(width = 0.2) + 
-  geom_point(data = class, color = "red", size = 4) + 
+  #geom_point(data = class, color = "red", size = 4) + 
   geom_text(data = class, aes(x = class, y = 10, label = paste0("n = ", n))) + 
   stat_summary(data = mpg, fun.data = mean_se, fun.args = list(mult = 2.5), geom = "errorbar")
 ```
