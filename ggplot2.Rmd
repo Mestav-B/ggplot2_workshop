@@ -16,9 +16,89 @@ if(!("ggplot2" %in% rownames(installed.packages()))) {
 }
 
 library(learnr)
-library(ggplot2)
-library(dplyr)
+library(tidyverse)
+library(knitr)
 ```
+
+## Introduction
+
+ - Mike Kleinsasser, MS in Statistics
+
+ - R programmer for the Department of Biostatistics
+ 
+ - Consult faculty and students on R package development, optimization
+ 
+ - Give workshops to students on useful R tools
+   - First workshops this semester: Tidyverse Series
+   
+```{r, out.width=500, out.height=300}
+include_graphics("www/tidyverseSeries.PNG")
+```
+
+ - Data Manipulation Workshop: Tuesday, September 15 at 5 p.m.
+   - Zoom link: https://umich.zoom.us/j/98858754267
+   - RSVP: https://www.eventbrite.com/e/data-manipulation-workshop-tickets-118357150423
+ - Data Visualization Workshop: Thursday, September 24 at 5 p.m.
+    - Zoom link: https://umich.zoom.us/j/98858754267
+    - RSVP: https://www.eventbrite.com/e/data-visualization-workshop-tickets-118360271759
+ - Shiny Workshop: Tuesday, October 6 at 5 p.m.
+    - Zoom link: https://umich.zoom.us/j/98858754267
+    - RSVP: https://www.eventbrite.com/e/shiny-workshop-tickets-118360693019
+ - Package Development 1: Thursday, October 15 at 5 p.m.
+    - Zoom link: https://umich.zoom.us/j/98858754267
+    - RSVP: https://www.eventbrite.com/e/package-development-1-tickets-118360891613
+ - Package Development 2: Tuesday, October 27 at 5 p.m.
+    - Zoom link: https://umich.zoom.us/j/98858754267
+    - RSVP: https://www.eventbrite.com/e/package-development-2-tickets-118361158411
+    
+Zoom join information:
+Mike Kleinsasser is inviting you to a scheduled Zoom meeting.
+
+Topic: R Workshops (Recurring)
+
+Join Zoom Meeting
+https://umich.zoom.us/j/98858754267
+
+Meeting ID: 988 5875 4267
+One tap mobile
++13017158592,,98858754267# US (Germantown)
++13126266799,,98858754267# US (Chicago)
+
+Dial by your location
+        +1 301 715 8592 US (Germantown)
+        +1 312 626 6799 US (Chicago)
+        +1 646 876 9923 US (New York)
+        +1 253 215 8782 US (Tacoma)
+        +1 346 248 7799 US (Houston)
+        +1 669 900 6833 US (San Jose)
+        +1 647 374 4685 Canada
+        +1 647 558 0588 Canada
+        +1 778 907 2071 Canada
+        +1 204 272 7920 Canada
+        +1 438 809 7799 Canada
+        +1 587 328 1099 Canada
+Meeting ID: 988 5875 4267
+Find your local number: https://umich.zoom.us/u/acTYHlRYm
+
+
+ - This tutorial was made with the `learnr` package for interactive tutorials in R.
+
+ - Here is an example to get started:
+
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+# copy this code and run it
+head(mpg)
+```
+
+```{r q1, exercise=TRUE, exercise.lines = 3}
+
+```
+
+ - Each example can be run in the slides, so no need to fire up R.
+
+ - If you get disconnected from the server, hit refresh and you won't lose progress.
+ 
+ - Note that the content for this workshop comes from the book R for Data Science
 
 
 ## Part 1: Introduction
@@ -696,17 +776,79 @@ ggplot(mpg, aes(displ, hwy)) +
 
 ```
 
+## Extended Exercise Set
+
+ - See if you can make some plots from the NYC flights data set
+
+ - Recall that the NYC flights data contain the following (simplified):
+
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+airlines
+airports
+flights
+planes
+weather
+```
+
+```{r q3, exercise=TRUE, exercise.lines = 3}
+
+```
+ 
+ - `flights` contains 336,776 flights that departed from NYC in 2013. 
+ 
+ - In R, `?flights` for documentation (or, man) page
+ 
+```{r, out.width=500, out.height=300}
+include_graphics("www/flightsTables.PNG")
+```
+
+ - Since the data set is large, let's work with a subset of the data. Create a table for just the data from January:
+ 
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+jan_flight = flights %>% filter(month == 1)
+```
+
+```{r q4, exercise=TRUE, exercise.lines = 3}
+
+```
+
+ - 1. Show how many flights took place each hour.
+ 
+ - 2. Is there a relationship between the scheduled hour of the flight and the distance flown?
+ 
+ - 3. Plot the arrival and departure delays for each flight colored by carrier for the top three carriers B6 (JetBlue), UA (United), EV (ExpressJet).
+ 
+ - 4. Compare the distributions of departure delays from the three origins (only look at delays less than 120 minutes). Try overlaying the estimated densities in a single plot. b) repeat this using facets.
+ 
+ - 5. First let's make a map of the USA. You will need the following packages (which I installed)
+ 
+```{r, exercise=FALSE, eval=FALSE, echo=TRUE}
+jan_flight = flights %>% filter(month == 1)
+```
+
+```{r q5, exercise=TRUE, exercise.lines = 6}
+library(maps)
+library(mapproj)
+ggplot(map_data("state"), aes(long, lat)) + 
+  geom_polygon(aes(group = group), colour = "white") + 
+  coord_map("albers", at0 = 45.5, lat1 = 29.5)
+
+```
+ 
+ - 5. This should make a nice map. Note how it uses longitude and lattitude for the coordinates. The airports table contains the longitude and latitude for each of the airports in the data set. Add a layer to the above plot that places a circle on each airport with a size relative to the number of flights to that location.
+ 
+ - 6. Create a map plot of your own design.
 
 
 
+```{r e28ac, exercise=TRUE, exercise.lines = 40}
+library(nycflights13)
+library(ggplot2)
+library(dplyr)
 
 
 
-
-
-
-
-
+```
 
 
 
