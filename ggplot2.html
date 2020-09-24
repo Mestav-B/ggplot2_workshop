@@ -568,6 +568,61 @@ ggplot(mpg, aes(class, fill = drv)) +
 <p>The second <code>stat_summary</code> takes arguments <code>fun.data</code>, which takes the entire vector being summarized and computes the summary, lower bound, and upper bound.</p>
 <p>Also, <code>fun.args</code> is used to pass a different multiplier to the <code>mean_se</code> function.</p>
 </div>
+<div id="section-economist-plot" class="section level2">
+<h2>Economist plot</h2>
+<p>Here is an example plot from a professional news publication.</p>
+<pre class="r"><code>library(ggrepel)
+EconomistData = read_csv(&quot;./EconomistData.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Country = col_character(),
+##   HDI.Rank = col_double(),
+##   HDI = col_double(),
+##   CPI = col_double(),
+##   Region = col_character()
+## )</code></pre>
+<pre class="r"><code>country_labels =  c(&quot;Russia&quot;, &quot;Venezuela&quot;, &quot;Iraq&quot;, &quot;Myanmar&quot;, &quot;Sudan&quot;,
+                      &quot;Afghanistan&quot;, &quot;Congo&quot;, &quot;Greece&quot;, &quot;Argentina&quot;, &quot;Brazil&quot;,
+                      &quot;United States&quot;, &quot;Germany&quot;, &quot;Britain&quot;, &quot;Barbados&quot;, &quot;Norway&quot;, 
+                      &quot;Japan&quot;, &quot;New Zealand&quot;, &quot;Singapore&quot;)
+
+ggplot(EconomistData, aes(x = CPI, y = HDI, color = Region)) + 
+    geom_point(shape = 1, size = 3, stroke = 2) + 
+    geom_smooth(method = &quot;lm&quot;,
+                formula = y ~ x + log(x), se = FALSE,
+                color = &quot;red&quot;) + 
+    geom_text_repel(aes(label = Country), color = &quot;black&quot;, 
+                    data = filter(EconomistData, Country %in% country_labels)) + 
+    scale_x_continuous(name = &quot;Corruption Perceptions Index, 2011 (10=least corrupt)&quot;,
+                       limits = c(.9, 10.5),
+                       breaks = 1:10) +
+    scale_y_continuous(name = &quot;Human Development Index, 2011 (1=Best)&quot;,
+                       limits = c(0.2, 1.0),
+                       breaks = seq(0.2, 1.0, by = 0.1)) +
+    scale_color_manual(name = &quot;&quot;,
+                       values = c(&quot;#24576D&quot;,
+                                  &quot;#099DD7&quot;,
+                                  &quot;#28AADC&quot;,
+                                  &quot;#248E84&quot;,
+                                  &quot;#F2583F&quot;,
+                                  &quot;#96503F&quot;)) +
+    ggtitle(&quot;Corruption and Human development&quot;) + 
+    theme_minimal() + 
+    theme(text = element_text(color = &quot;gray20&quot;),
+          legend.position = c(&quot;top&quot;),  
+          legend.direction = &quot;horizontal&quot;,
+          legend.justification = 0.1, 
+          legend.text = element_text(size = 11, color = &quot;gray10&quot;),
+          axis.text = element_text(face = &quot;italic&quot;),
+          axis.title.x = element_text(vjust = -1),
+          axis.title.y = element_text(vjust = 2), 
+          axis.ticks.y = element_blank(), 
+          axis.line = element_line(color = &quot;gray40&quot;, size = 0.5),
+          axis.line.y = element_blank(),
+          panel.grid.major = element_line(color = &quot;gray50&quot;, size = 0.5),
+          panel.grid.major.x = element_blank())</code></pre>
+<p><img src="ggplot2_files/figure-html/d3-1.png" width="624" /></p>
+</div>
 <div id="section-exercise-4" class="section level2">
 <h2>Exercise</h2>
 <p>The following code uses dplyr to calculate some summaries about each class of car. Use the pre-summarised data to re-create the following plot:</p>
@@ -977,7 +1032,7 @@ output$`tutorial-exercise-e28ac-output` <- renderUI({
 <!--/html_preserve-->
 <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="execution_dependencies">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81]}},"value":[{"type":"character","attributes":{},"value":["assertthat","backports","base","blob","broom","cellranger","cli","colorspace","compiler","crayon","datasets","DBI","dbplyr","digest","dplyr","ellipsis","evaluate","fansi","farver","fastmap","forcats","fs","generics","ggplot2","glue","graphics","grDevices","grid","gtable","haven","hms","htmltools","htmlwidgets","httpuv","httr","jsonlite","knitr","labeling","later","lattice","learnr","lifecycle","lubridate","magrittr","markdown","methods","mime","modelr","munsell","nlme","pillar","pkgconfig","promises","purrr","R6","Rcpp","readr","readxl","reprex","rlang","rmarkdown","rprojroot","rstudioapi","rvest","scales","shiny","stats","stringi","stringr","tibble","tidyr","tidyselect","tidyverse","tools","utils","vctrs","withr","xfun","xml2","xtable","yaml"]},{"type":"character","attributes":{},"value":["0.2.1","1.1.8","4.0.2","1.2.1","0.5.6","1.1.0","2.0.2","1.4-1","4.0.2","1.3.4","4.0.2","1.1.0","1.4.4","0.6.25","1.0.0","0.3.1","0.14","0.4.1","2.0.3","1.0.1","0.5.0","1.4.2","0.0.2","3.3.2","1.4.1","4.0.2","4.0.2","4.0.2","0.3.0","2.3.1","0.5.3","0.5.0","1.5.1","1.5.4","1.4.1","1.7.0","1.29","0.3","1.1.0.1","0.20-41","0.10.1","0.2.0","1.7.9","1.5","1.1","4.0.2","0.9","0.1.8","0.5.0","3.1-148","1.4.6","2.0.3","1.1.1","0.3.4","2.4.1","1.0.5","1.3.1","1.3.1","0.3.0","0.4.7","2.3","1.3-2","0.11","0.3.5","1.1.1","1.5.0","4.0.2","1.4.6","1.4.0","3.0.3","1.1.0","1.1.0","1.3.0","4.0.2","4.0.2","0.3.2","2.2.0","0.15","1.3.2","1.8-4","2.2.1"]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85]}},"value":[{"type":"character","attributes":{},"value":["assertthat","backports","base","blob","broom","cellranger","cli","colorspace","compiler","crayon","datasets","DBI","dbplyr","digest","dplyr","ellipsis","evaluate","fansi","farver","fastmap","forcats","fs","generics","ggplot2","ggrepel","glue","graphics","grDevices","grid","gtable","haven","hms","htmltools","htmlwidgets","httpuv","httr","jsonlite","knitr","labeling","later","lattice","learnr","lifecycle","lubridate","magrittr","markdown","Matrix","methods","mgcv","mime","modelr","munsell","nlme","pillar","pkgconfig","promises","purrr","R6","Rcpp","readr","readxl","reprex","rlang","rmarkdown","rprojroot","rstudioapi","rvest","scales","shiny","splines","stats","stringi","stringr","tibble","tidyr","tidyselect","tidyverse","tools","utils","vctrs","withr","xfun","xml2","xtable","yaml"]},{"type":"character","attributes":{},"value":["0.2.1","1.1.8","4.0.2","1.2.1","0.5.6","1.1.0","2.0.2","1.4-1","4.0.2","1.3.4","4.0.2","1.1.0","1.4.4","0.6.25","1.0.0","0.3.1","0.14","0.4.1","2.0.3","1.0.1","0.5.0","1.4.2","0.0.2","3.3.2","0.8.2","1.4.1","4.0.2","4.0.2","4.0.2","0.3.0","2.3.1","0.5.3","0.5.0","1.5.1","1.5.4","1.4.1","1.7.0","1.29","0.3","1.1.0.1","0.20-41","0.10.1","0.2.0","1.7.9","1.5","1.1","1.2-18","4.0.2","1.8-31","0.9","0.1.8","0.5.0","3.1-148","1.4.6","2.0.3","1.1.1","0.3.4","2.4.1","1.0.5","1.3.1","1.3.1","0.3.0","0.4.7","2.3","1.3-2","0.11","0.3.5","1.1.1","1.5.0","4.0.2","4.0.2","1.4.6","1.4.0","3.0.3","1.1.0","1.1.0","1.3.0","4.0.2","4.0.2","0.3.2","2.2.0","0.15","1.3.2","1.8-4","2.2.1"]}]}]}
 </script>
 <!--/html_preserve-->
 </div>

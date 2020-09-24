@@ -705,6 +705,56 @@ The second `stat_summary` takes arguments `fun.data`, which takes the entire vec
 
 Also, `fun.args` is used to pass a different multiplier to the `mean_se` function.
 
+## Economist plot
+
+Here is an example plot from a professional news publication.
+
+```{r d3, exercise=FALSE, eval=TRUE, echo=TRUE}
+library(ggrepel)
+EconomistData = read_csv("./EconomistData.csv")
+country_labels =  c("Russia", "Venezuela", "Iraq", "Myanmar", "Sudan",
+                      "Afghanistan", "Congo", "Greece", "Argentina", "Brazil",
+                      "United States", "Germany", "Britain", "Barbados", "Norway", 
+                      "Japan", "New Zealand", "Singapore")
+
+ggplot(EconomistData, aes(x = CPI, y = HDI, color = Region)) + 
+    geom_point(shape = 1, size = 3, stroke = 2) + 
+    geom_smooth(method = "lm",
+                formula = y ~ x + log(x), se = FALSE,
+                color = "red") + 
+    geom_text_repel(aes(label = Country), color = "black", 
+                    data = filter(EconomistData, Country %in% country_labels)) + 
+    scale_x_continuous(name = "Corruption Perceptions Index, 2011 (10=least corrupt)",
+                       limits = c(.9, 10.5),
+                       breaks = 1:10) +
+    scale_y_continuous(name = "Human Development Index, 2011 (1=Best)",
+                       limits = c(0.2, 1.0),
+                       breaks = seq(0.2, 1.0, by = 0.1)) +
+    scale_color_manual(name = "",
+                       values = c("#24576D",
+                                  "#099DD7",
+                                  "#28AADC",
+                                  "#248E84",
+                                  "#F2583F",
+                                  "#96503F")) +
+    ggtitle("Corruption and Human development") + 
+    theme_minimal() + 
+    theme(text = element_text(color = "gray20"),
+          legend.position = c("top"),  
+          legend.direction = "horizontal",
+          legend.justification = 0.1, 
+          legend.text = element_text(size = 11, color = "gray10"),
+          axis.text = element_text(face = "italic"),
+          axis.title.x = element_text(vjust = -1),
+          axis.title.y = element_text(vjust = 2), 
+          axis.ticks.y = element_blank(), 
+          axis.line = element_line(color = "gray40", size = 0.5),
+          axis.line.y = element_blank(),
+          panel.grid.major = element_line(color = "gray50", size = 0.5),
+          panel.grid.major.x = element_blank())
+```
+
+
 
 ## Exercise
 
